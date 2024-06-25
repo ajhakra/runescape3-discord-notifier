@@ -4,23 +4,24 @@ import re
 import time
 
 # Globals for easy access to variables that need to be configured
-fileStorageLoc = "/your/location/here/"
+fileStorageLoc = "/your/absolute/path/here"
+# userlist.txt and webhooks.txt should be set in a csv format
 userNameList = (open(fileStorageLoc+"userlist.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")
 webhookUrlLevel = (open(fileStorageLoc+"webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[0]
 webhookUrlLoot = (open(fileStorageLoc+"webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[1]
 footerText = str((open(fileStorageLoc+"footer.txt", "rt").read()))
 
 def getData(charName):
-    # Query the Runescape API to get the 20 latest account activities
-    dataQuery = (requests.get("https://apps.runescape.com/runemetrics/profile/profile?user="+charName+"&activities=20").json())["activities"]
+    # Query the Runescape API to get the 20 latest account activities, if rate limited or no data, set to blank to avoid the return failing
+    try:
+        dataQuery = (requests.get("https://apps.runescape.com/runemetrics/profile/profile?user="+charName+"&activities=20").json())["activities"]
+    except:
+        dataQuery = ""
     return str(dataQuery),charName
 
 def activityComparison(dataQuery,charName):
-    # Create file to store the last 20 activities received, if it doesnt already exist
-    try:
-        open(fileStorageLoc + charName + "-activity.txt", "xt")
-    except:
-        pass
+    # Create file to store the last 20 activities received
+    open(fileStorageLoc + charName + "-activity.txt", "wt")
 
     # Read from activity file and parse into required format (proper json pending)
     readFile = open(fileStorageLoc + charName + "-activity.txt", "rt").read()
