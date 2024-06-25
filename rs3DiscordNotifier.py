@@ -1,11 +1,13 @@
 import requests
 from discord_webhook import DiscordWebhook, DiscordEmbed
 import re
+import time
 
 # Globals for easy access to variables that need to be configured
 userNameList = ["user1", "user2", "user3"]
 webhookUrlLevel = "webhookUrlLevel"
 webhookUrlLoot = "webhookUrlLoot"
+footerText = "footer"
 
 def getData(charName):
     # Query the Runescape API to get the 20 latest account activities
@@ -54,7 +56,7 @@ def postToDiscord(payload,charName):
         fancy = DiscordEmbed(title=notifType, description=charName + " has levelled " + setSkill + " to " + levelNumber, color="2A415F")
         fancy.set_author(name=charName, icon_url="https://static.wikia.nocookie.net/runescape2/images/a/a7/RuneScape_Companion_logo.png/revision/latest?cb=20170207223045")
         fancy.set_thumbnail(url="https://runescape.wiki/images/thumb/" + setSkill + "-icon.png/21px-" + setSkill + "-icon.png?c19b9")
-        fancy.set_footer(text="footer")
+        fancy.set_footer(text=footerText)
         fancy.set_timestamp()
         discord.add_embed(fancy)
         discord.execute()
@@ -66,5 +68,7 @@ def main():
             getDataValue = getData(character)
             activityComparisonValue = activityComparison(getDataValue[0], getDataValue[1])
             postToDiscord(activityComparisonValue[0], activityComparisonValue[1])
+            # rate limit avoidance (for the runescape endpoint)
+            time.sleep(2)
 
 main()
