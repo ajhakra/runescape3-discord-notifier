@@ -3,8 +3,10 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import re
 import time
 
-# Globals for easy access to variables that need to be configured
+
+# This should be an absolute path, or failure :))
 fileStorageLoc = "/your/absolute/path/here/"
+
 # userlist.txt and webhooks.txt should be set in a csv format
 userNameList = (open(fileStorageLoc+"userlist.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")
 webhookUrlLevel = (open(fileStorageLoc+"webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[0]
@@ -20,8 +22,11 @@ def getData(charName):
     return str(dataQuery),charName
 
 def activityComparison(dataQuery,charName):
-    # Create file to store the last 20 activities received
-    open(fileStorageLoc + charName + "-activity.txt", "wt")
+    # Create file to store the last 20 activities received. Required to be in create mode or the file will be wiped with each run, causing the comparison to fail as readFile would be empty
+    try:
+        open(fileStorageLoc + charName + "-activity.txt", "xt")
+    except:
+        pass
 
     # Read from activity file and parse into required format (proper json pending)
     readFile = open(fileStorageLoc + charName + "-activity.txt", "rt").read()
