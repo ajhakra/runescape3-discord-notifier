@@ -7,7 +7,7 @@ import time
 userNameList = (open("userlist.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")
 webhookUrlLevel = (open("webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[0]
 webhookUrlLoot = (open("webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[1]
-footerText = str((open("footer", "rt").read()))
+footerText = str((open("footer.txt", "rt").read()))
 
 def getData(charName):
     # Query the Runescape API to get the 20 latest account activities
