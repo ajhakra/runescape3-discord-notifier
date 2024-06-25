@@ -4,10 +4,10 @@ import re
 import time
 
 # Globals for easy access to variables that need to be configured
-userNameList = ["user1", "user2", "user3"]
-webhookUrlLevel = "webhookUrlLevel"
-webhookUrlLoot = "webhookUrlLoot"
-footerText = "footer"
+userNameList = (open("userlist.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")
+webhookUrlLevel = (open("webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[0]
+webhookUrlLoot = (open("webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[1]
+footerText = str((open("footer", "rt").read()))
 
 def getData(charName):
     # Query the Runescape API to get the 20 latest account activities
