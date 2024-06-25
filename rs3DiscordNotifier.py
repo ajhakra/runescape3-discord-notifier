@@ -4,10 +4,11 @@ import re
 import time
 
 # Globals for easy access to variables that need to be configured
-userNameList = (open("userlist.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")
-webhookUrlLevel = (open("webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[0]
-webhookUrlLoot = (open("webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[1]
-footerText = str((open("footer.txt", "rt").read()))
+fileStorageLoc = "/your/location/here/"
+userNameList = (open(fileStorageLoc+"userlist.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")
+webhookUrlLevel = (open(fileStorageLoc+"webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[0]
+webhookUrlLoot = (open(fileStorageLoc+"webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[1]
+footerText = str((open(fileStorageLoc+"footer.txt", "rt").read()))
 
 def getData(charName):
     # Query the Runescape API to get the 20 latest account activities
@@ -17,12 +18,12 @@ def getData(charName):
 def activityComparison(dataQuery,charName):
     # Create file to store the last 20 activities received, if it doesnt already exist
     try:
-        open(charName + "-activity.txt", "xt")
+        open(fileStorageLoc + charName + "-activity.txt", "xt")
     except:
         pass
 
     # Read from activity file and parse into required format (proper json pending)
-    readFile = open(charName + "-activity.txt", "rt").read()
+    readFile = open(fileStorageLoc + charName + "-activity.txt", "rt").read()
 
     fileReadParse= readFile.replace("}", "~").replace("{", "").replace("~, ", "~").replace("[", "").replace("]", "").replace("\"", "").split("~")
 
@@ -35,7 +36,7 @@ def activityComparison(dataQuery,charName):
         print(entry)
     
     # Write queried data to activity file
-    open(charName + "-activity.txt", "wt").write(dataQuery)
+    open(fileStorageLoc + charName + "-activity.txt", "wt").write(dataQuery)
     return reversed(updateList), charName
 
 def postToDiscord(payload,charName):
