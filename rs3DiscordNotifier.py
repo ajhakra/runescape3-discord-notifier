@@ -4,7 +4,7 @@ import re
 import time
 
 # Globals for easy access to variables that need to be configured
-fileStorageLoc = "/your/absolute/path/here"
+fileStorageLoc = "/your/absolute/path/here/"
 # userlist.txt and webhooks.txt should be set in a csv format
 userNameList = (open(fileStorageLoc+"userlist.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")
 webhookUrlLevel = (open(fileStorageLoc+"webhooks.txt", "rt").read()).replace("[", "").replace("]", "").replace(" ", "").split(",")[0]
